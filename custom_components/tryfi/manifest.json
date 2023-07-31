@@ -10,6 +10,6 @@
     ],
     "dependencies": [],
     "iot_class": "cloud_polling",
-    "codeowners": ["@sbabcock23"]
+    "codeowners": ["@sbabcock23", "@ws"]
   }
   

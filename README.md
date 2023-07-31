@@ -1,4 +1,4 @@
-# TryFi for Home Assistant
+# TryFi for Home Assistant (@ws fork)
 ![beta_badge](https://img.shields.io/badge/maturity-Beta-yellow.png?style=for-the-badge)
 [![](https://img.shields.io/github/release/sbabcock23/hass-tryfi/all.svg?style=for-the-badge)](https://github.com/sbabcock23/hass-tryfi/releases)
 ![release_date](https://img.shields.io/github/release-date/sbabcock23/hass-tryfi.svg?style=for-the-badge)
