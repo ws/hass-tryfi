@@ -2,10 +2,12 @@
 import logging
 
 from homeassistant.const import (
-    DEVICE_CLASS_BATTERY,
     PERCENTAGE,
     UnitOfLength,
     UnitOfTime
+)
+from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass
 )
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.icon import icon_for_battery_level
@@ -340,7 +342,7 @@ class TryFiBatterySensor(CoordinatorEntity, Entity):
     @property
     def device_class(self):
         """Return the device class of the sensor."""
-        return DEVICE_CLASS_BATTERY
+        return BinarySensorDeviceClass.BATTERY
 
     @property
     def unit_of_measurement(self):
