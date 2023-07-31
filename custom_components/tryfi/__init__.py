@@ -4,25 +4,16 @@ from datetime import timedelta
 
 from homeassistant import exceptions
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
-from homeassistant.helpers import discovery
-from homeassistant.helpers.dispatcher import async_dispatcher_connect, dispatcher_send
-from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.event import track_time_interval
 from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
     DataUpdateCoordinator,
     UpdateFailed,
 )
 from pytryfi import PyTryFi
 
 from .const import (
-    CONF_PASSWORD,
-    CONF_POLLING_RATE,
-    CONF_USERNAME,
-    DEFAULT_POLLING_RATE,
     DOMAIN,
     PLATFORMS,
 )
@@ -36,10 +27,11 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    tryfi = await hass.async_add_executor_job(PyTryFi,entry.data["username"], entry.data["password"])
+    tryfi = await hass.async_add_executor_job(PyTryFi, entry.data["username"], entry.data["password"])
     hass.data[DOMAIN][entry.entry_id] = tryfi
 
-    coordinator = TryFiDataUpdateCoordinator(hass, tryfi, int(entry.data["polling"]))
+    coordinator = TryFiDataUpdateCoordinator(
+        hass, tryfi, int(entry.data["polling"]))
     await coordinator.async_refresh()
 
     if not coordinator.last_update_success:
@@ -66,7 +58,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     unload_ok = all(
         await asyncio.gather(
             *[
-                hass.config_entries.async_forward_entry_unload(entry, component)
+                hass.config_entries.async_forward_entry_unload(
+                    entry, component)
                 for component in PLATFORMS
             ]
         )

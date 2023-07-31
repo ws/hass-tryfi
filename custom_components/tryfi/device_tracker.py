@@ -2,19 +2,8 @@ import logging
 
 from homeassistant.components.device_tracker import SOURCE_TYPE_GPS
 from homeassistant.components.device_tracker.config_entry import TrackerEntity
-from homeassistant.const import (
-    DEVICE_CLASS_BATTERY,
-    PERCENTAGE,
-    STATE_OK,
-    STATE_PROBLEM,
-)
-from homeassistant.core import callback
-from homeassistant.helpers.dispatcher import async_dispatcher_connect, dispatcher_send
-from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
 )
 
 from .const import DOMAIN
@@ -30,7 +19,8 @@ async def async_setup_entry(hass, config_entry, async_add_devices):
 
     new_devices = []
     for pet in tryfi.pets:
-        new_devices.append(TryFiPetTracker(async_add_devices, hass, pet, coordinator))
+        new_devices.append(TryFiPetTracker(
+            async_add_devices, hass, pet, coordinator))
     if new_devices:
         async_add_devices(new_devices, True)
 

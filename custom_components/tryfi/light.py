@@ -1,23 +1,10 @@
 import logging
 from datetime import datetime, timedelta
 
-from homeassistant.components.light import SUPPORT_COLOR, LightEntity
-from homeassistant.const import (
-    DEVICE_CLASS_BATTERY,
-    PERCENTAGE,
-    STATE_OK,
-    STATE_PROBLEM,
-)
-from homeassistant.core import callback
-from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.dispatcher import async_dispatcher_connect, dispatcher_send
-from homeassistant.helpers.icon import icon_for_battery_level
+from homeassistant.components.light import LightEntity
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
 )
-from homeassistant.util import color
 
 from .const import DOMAIN
 

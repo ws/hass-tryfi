@@ -3,6 +3,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 
+
 async def async_setup_entry(hass, config_entry, async_add_devices):
     """Add sensors for passed config_entry in HA."""
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
@@ -66,6 +67,6 @@ class TryFiLostMode(CoordinatorEntity, SelectEntity):
             "model": self.pet.breed,
             "sw_version": self.pet.device.buildId,
         }
-    
+
     def select_option(self, option):
         self.pet.setLostDogMode(self.tryfi.session, option == 'Lost')

@@ -3,20 +3,14 @@ import logging
 
 from homeassistant.const import (
     DEVICE_CLASS_BATTERY,
-    LENGTH_KILOMETERS,
     PERCENTAGE,
-    TIME_MINUTES,
-    STATE_OK,
-    STATE_PROBLEM,
+    UnitOfLength,
+    UnitOfTime
 )
-from homeassistant.core import callback
-from homeassistant.helpers.dispatcher import async_dispatcher_connect, dispatcher_send
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
 )
 
 from .const import DOMAIN, SENSOR_STATS_BY_TIME, SENSOR_STATS_BY_TYPE
@@ -41,11 +35,14 @@ async def async_setup_entry(hass, config_entry, async_add_devices):
                     PetStatsSensor(hass, pet, coordinator, statType, statTime)
                 )
         LOGGER.debug(f"Adding Pet Generic Sensor: {pet}")
-        new_devices.append(PetGenericSensor(hass, pet, coordinator, "Activity Type"))
-        new_devices.append(PetGenericSensor(hass, pet, coordinator, "Current Place Name"))
-        new_devices.append(PetGenericSensor(hass, pet, coordinator, "Current Place Address"))
-        new_devices.append(PetGenericSensor(hass, pet, coordinator, "Connected To"))
-        
+        new_devices.append(PetGenericSensor(
+            hass, pet, coordinator, "Activity Type"))
+        new_devices.append(PetGenericSensor(
+            hass, pet, coordinator, "Current Place Name"))
+        new_devices.append(PetGenericSensor(
+            hass, pet, coordinator, "Current Place Address"))
+        new_devices.append(PetGenericSensor(
+            hass, pet, coordinator, "Connected To"))
 
     for base in tryfi.bases:
         LOGGER.debug(f"Adding Base: {base}")
@@ -110,6 +107,7 @@ class TryFiBaseSensor(CoordinatorEntity, Entity):
             # "sw_version": self.pet.device.buildId,
         }
 
+
 class PetGenericSensor(CoordinatorEntity, Entity):
     """Representation of a Sensor."""
 
@@ -118,7 +116,7 @@ class PetGenericSensor(CoordinatorEntity, Entity):
         self._petId = pet.petId
         self._statType = statType
         super().__init__(coordinator)
-    
+
     @property
     def statType(self):
         return self._statType
@@ -180,6 +178,7 @@ class PetGenericSensor(CoordinatorEntity, Entity):
             return self.pet.getCurrPlaceAddress()
         elif self.statType == "Connected To":
             return self.pet.device.connectionStateType
+
     @property
     def unit_of_measurement(self):
         return None
@@ -193,6 +192,7 @@ class PetGenericSensor(CoordinatorEntity, Entity):
             "model": self.pet.breed,
             "sw_version": self.pet.device.buildId,
         }
+
 
 class PetStatsSensor(CoordinatorEntity, Entity):
     """Representation of a Sensor."""
@@ -284,11 +284,11 @@ class PetStatsSensor(CoordinatorEntity, Entity):
     def unit_of_measurement(self):
         """Return the unit_of_measurement of the device."""
         if self.statType.upper() == "DISTANCE":
-            return LENGTH_KILOMETERS
+            return UnitOfLength.KILOMETERS
         elif self.statType.upper() == "SLEEP":
-            return TIME_MINUTES
+            return UnitOfTime.MINUTES
         elif self.statType.upper() == "NAP":
-            return TIME_MINUTES
+            return UnitOfTime.MINUTES
         else:
             return "steps"
 
